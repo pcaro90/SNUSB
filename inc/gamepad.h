@@ -21,7 +21,9 @@
 #ifndef __GAMEPAD_H__
 #define __GAMEPAD_H__
 
+#include <avr/io.h>
 #include <util/delay.h>
+#include <stdint.h>
 
 
 // Button values
@@ -49,8 +51,8 @@
 #define PRESSED_B         (BUTTON & BUTTON_B)
 #define PRESSED_X         (BUTTON & BUTTON_X)
 #define PRESSED_Y         (BUTTON & BUTTON_Y)
-#define PRESSED_L         (BUTTON & BUTTON_L1)
-#define PRESSED_R         (BUTTON & BUTTON_R1)
+#define PRESSED_L         (BUTTON & BUTTON_L)
+#define PRESSED_R         (BUTTON & BUTTON_R)
 #define PRESSED_START     (BUTTON & BUTTON_START)
 #define PRESSED_SELECT    (BUTTON & BUTTON_SELECT)
 
@@ -74,10 +76,10 @@ extern uint8_t BUTTON;
 extern uint8_t JOYPAD;
 extern uint8_t VIRTUAL;
 
-void gamepad_init();
-void gamepad_read();
-void button_read();
-void cycle_latch();
-void cycle_clock();
+void gamepad_init(void);
+void gamepad_read(void);
+uint8_t button_read(uint8_t button);
+void cycle_latch(void);
+void cycle_clock(void);
 
 #endif
