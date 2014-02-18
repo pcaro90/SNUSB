@@ -17,6 +17,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ----------------------------------------------------------------------
 
+#include "gamepad.h"
+
 uint8_t BUTTON = 0;
 uint8_t JOYPAD = 0;
 uint8_t VIRTUAL = 0;
@@ -44,10 +46,10 @@ void gamepad_read()
     BUTTON |= button_read(BUTTON_SELECT);
     BUTTON |= button_read(BUTTON_START);
 
-    JOYPAD  = joypad_read(JOYPAD_UP);
-    JOYPAD |= joypad_read(JOYPAD_DOWN);
-    JOYPAD |= joypad_read(JOYPAD_LEFT);
-    JOYPAD |= joypad_read(JOYPAD_RIGHT);
+    JOYPAD  = button_read(JOYPAD_UP);
+    JOYPAD |= button_read(JOYPAD_DOWN);
+    JOYPAD |= button_read(JOYPAD_LEFT);
+    JOYPAD |= button_read(JOYPAD_RIGHT);
 
     BUTTON |= button_read(BUTTON_A);
     BUTTON |= button_read(BUTTON_X);
@@ -75,7 +77,7 @@ void gamepad_read()
 
 }
 
-void button_read(uint8_t button)
+uint8_t button_read(uint8_t button)
 {
     cycle_clock();
     return (PINB & DATA) ? 0 : button;
@@ -102,5 +104,3 @@ void cycle_clock()
     PORTB |= CLOCK;
     _delay_us(6);
 }
-
-#endif
