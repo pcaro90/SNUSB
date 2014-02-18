@@ -53,7 +53,8 @@ SRCDIR = src
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC =	$(TARGET).c \
-	usb_keyboard.c
+	usb_keyboard.c \
+	gamepad.c
 
 # Object files directory
 #     To put object files in current directory, use a dot (.), do NOT make
