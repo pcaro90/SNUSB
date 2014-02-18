@@ -23,4 +23,4 @@ Copyright (c) 2014 Pablo Caro. All Rights Reserved.
 Pablo Caro <<me@pcaro.es>> - <https://pcaro.es/>
 
 Some of the parts were based on the work by Josh Kropf <<josh@slashdev.ca>>,
-released under the GPL3 license.
+released under the GPL3 license and the MIT license.
