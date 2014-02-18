@@ -29,7 +29,7 @@ void gamepad_init()
     DDRB &= ~DATA;  // Use DATA bit as input
 
     // Configure B port output/input
-    PORTB &= ~CLOCK;  // Set CLOCK bit to 0
+    PORTB |= CLOCK;   // Set CLOCK bit to 0
     PORTB &= ~LATCH;  // Set LATCH bit to 0
     PORTB &= ~DATA;   // Set DATA bit to normal input
 }
@@ -77,6 +77,7 @@ void gamepad_read()
 
 void button_read(uint8_t button)
 {
+    cycle_clock();
     return (PINB & DATA) ? 0 : button;
 }
 
@@ -93,12 +94,12 @@ void cycle_latch()
 
 void cycle_clock()
 {
-    // Set CLOCK bit to 1
-    PORTB |= CLOCK;
-    _delay_us(6);
-
     // Set CLOCK bit to 0
     PORTB &= ~CLOCK;
+    _delay_us(6);
+
+    // Set CLOCK bit to 1
+    PORTB |= CLOCK;
     _delay_us(6);
 }
 
