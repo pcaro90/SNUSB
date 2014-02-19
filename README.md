@@ -22,5 +22,8 @@ Copyright (c) 2014 Pablo Caro. All Rights Reserved.
 
 Pablo Caro <<me@pcaro.es>> - <https://pcaro.es/>
 
-Some of the parts were based on the work by Josh Kropf <<josh@slashdev.ca>>,
-released under the GPL3 license and the MIT license.
+Some of the parts were based on the work by John Burkert
+<<johkburkert@gmail.com>>, released under the MIT license, and use the
+"usb_keyboard" code from the [PJRC
+example](http://www.pjrc.com/teensy/usb_keyboard.html), released under the MIT
+license.
