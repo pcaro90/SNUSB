@@ -20,8 +20,8 @@
 #include "SNUSB.h"
 
 #define LED_CONFIG	(DDRD |= (1<<6))
-#define LED_ON		(PORTD &= ~(1<<6))
-#define LED_OFF		(PORTD |= (1<<6))
+#define LED_ON		(PORTD |= (1<<6))
+#define LED_OFF		(PORTD &= ~(1<<6))
 
 #define CPU_PRESCALE(n)	(CLKPR = 0x80, CLKPR = (n))
 
@@ -77,6 +77,8 @@ int main()
 	TCCR0A = 0x00;  // Normal mode
 	TCCR0B = 0x05;  // Clock/1024
 	TIMSK0 = (1<<TOIE0);
+
+    LED_OFF;
 
 	while (1) {
         while (!ready);  // Block until the next cycle (~60Hz)
