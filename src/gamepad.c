@@ -79,8 +79,9 @@ void gamepad_read()
 
 uint8_t button_read(uint8_t button)
 {
+    uint8_t pressed = (PINB & DATA) ? 0 : button;
     cycle_clock();
-    return (PINB & DATA) ? 0 : button;
+    return pressed;
 }
 
 void cycle_latch()
