@@ -1,27 +1,23 @@
-// ---------------------------------------------------
-// Copyright (c) 2014 Pablo Caro
+// ----------------------------------------------------------------------
+// Copyright (c) 2014 Pablo Caro. All Rights Reserved.
 // Pablo Caro <me@pcaro.es> - https://pcaro.es/
 // SNUSB.c
-
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// ---------------------------------------------------
+// ----------------------------------------------------------------------
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include "usb_keyboard.h"
-#include "gamepad.h"
+#include "SNUSB.h"
 
 #define LED_CONFIG	(DDRD |= (1<<6))
 #define LED_ON		(PORTD &= ~(1<<6))
@@ -31,7 +27,27 @@
 
 volatile int ready = 1;
 
-int main(void)
+void reset_keys()
+{
+    int i;
+    for (i = 0; i < 6; ++i) {
+        keyboard_keys[i] = 0;
+    }
+
+    keyboard_modifier_keys = 0;
+}
+
+void press_key(uint8_t key, uint8_t index)
+{
+    keyboard_keys[index] = key;
+}
+
+void press_modifier(uint8_t modifier)
+{
+    keyboard_modifier_keys |= modifier;
+}
+
+int main()
 {
 	// set for 16 MHz clock
 	CPU_PRESCALE(0);
@@ -57,10 +73,6 @@ int main(void)
 	// and do whatever it does to actually be ready for input
 	_delay_ms(1000);
 
-	// Configure timer 0 to generate a timer overflow interrupt every
-	// 256*1024 clock cycles, or approx 61 Hz when using 16 MHz clock
-	// This demonstrates how to use interrupts to implement a simple
-	// inactivity timeout.
     // Timer 0 configuration (~60Hz)
 	TCCR0A = 0x00;  // Normal mode
 	TCCR0B = 0x05;  // Clock/1024
@@ -75,6 +87,40 @@ int main(void)
         // Read pressed buttons from gamepad interface
         gamepad_read();
 
+        // Reset key array
+        reset_keys();
+
+        // 6 keys can be sent at a time, with any number of modifiers.
+        //
+        // - Buttons A, B, X and Y have their own position in the key array.
+        // - Up/down and left/right pairs share one position, as they are
+        //     mutually exclusive (you cannot pres up AND down).
+        // - L and R use the left and right Shift modifiers.
+        // - Select and Start use the left and right Ctrl modifiers.
+
+        if (PRESSED_A) press_key(KEY_Z, 0);
+        if (PRESSED_B) press_key(KEY_X, 1);
+        if (PRESSED_X) press_key(KEY_A, 2);
+        if (PRESSED_Y) press_key(KEY_S, 3);
+
+        if (PRESSED_UP) {
+            press_key(KEY_UP, 4);
+        } else if (PRESSED_DOWN){
+            press_key(KEY_DOWN, 4);
+        }
+
+        if (PRESSED_LEFT) {
+            press_key(KEY_LEFT, 5);
+        } else if (PRESSED_RIGHT){
+            press_key(KEY_RIGHT, 5);
+        }
+
+        if (PRESSED_L) press_modifier(KEY_LEFT_SHIFT);
+        if (PRESSED_R) press_modifier(KEY_RIGHT_SHIFT);
+        if (PRESSED_SELECT) press_modifier(KEY_LEFT_CTRL);
+        if (PRESSED_START) press_modifier(KEY_RIGHT_CTRL);
+
+        usb_keyboard_send();
 	}
 }
 
