@@ -27,7 +27,7 @@
 
 
 // Button values
-#define BUTTON_A        (0 << 0)
+#define BUTTON_A        (1 << 0)
 #define BUTTON_B        (1 << 1)
 #define BUTTON_X        (1 << 2)
 #define BUTTON_Y        (1 << 3)
