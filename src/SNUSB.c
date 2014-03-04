@@ -111,7 +111,7 @@ int main()
 
         // Special functions
         // - Software reboot
-        if (VIRTUAL_REBOOT) {
+        if (PRESSED_REBOOT) {
             reboot();
         }
 
