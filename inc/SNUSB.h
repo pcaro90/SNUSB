@@ -26,6 +26,7 @@
 #include "usb_keyboard.h"
 #include "gamepad.h"
 
+void reboot(void);
 void reset_keys(void);
 void press_key(uint8_t, uint8_t);
 void press_modifier(uint8_t);
